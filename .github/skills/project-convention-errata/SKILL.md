@@ -9,6 +9,7 @@ description: This skill is errata for common pitfalls on how to develop module f
 > "how we work here."
 
 ---
+** Last update - April, 2026 **
 
 ## 1. Core Philosophy
 
