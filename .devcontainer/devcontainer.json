@@ -1,0 +1,41 @@
+{
+  "name": "ERPNext Label Calculator Dev",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "frappe",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.mypy-type-checker",
+        "charliermarsh.ruff",
+        "ms-vscode.vscode-json",
+        "redhat.vscode-yaml",
+        "eamodio.gitlens",
+        "mhutchie.git-graph",
+        "GitHub.copilot"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff"
+        },
+        "ruff.organizeImports": true,
+        "python.testing.pytestEnabled": true,
+        "python.testing.pytestArgs": ["-m", "unit"]
+      }
+    }
+  },
+  "forwardPorts": [8000, 9000, 6787],
+  "portsAttributes": {
+    "8000": {
+      "label": "Frappe Desk",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "remoteUser": "frappe"
+}
