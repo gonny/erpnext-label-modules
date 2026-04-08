@@ -1,19 +1,42 @@
-version: "3.8"
-
 services:
-  frappe:
-    image: ghcr.io/frappe/bench:latest
-    command: sleep infinity
+  mariadb:
+    image: docker.io/mariadb:lts
+    network_mode: host
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
+      - --skip-innodb-read-only-compressed
+      - --port=3306
     environment:
-      - FRAPPE_BRANCH=${FRAPPE_BRANCH:-version-16}
-      - ERPNEXT_BRANCH=${ERPNEXT_BRANCH:-version-16}
-      - DB_HOST=mariadb
-      - DB_PORT=3306
-      - REDIS_CACHE=redis-cache:6379
-      - REDIS_QUEUE=redis-queue:6379
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-123}
     volumes:
-      - workspace:/workspace:cached
-      - ..:/workspace/apps/label_calculator:cached
+      - mariadb-data:/var/lib/mysql
+    healthcheck:
+      test: mariadb-admin ping -h 127.0.0.1 -u root -p123
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis-cache:
+    image: docker.io/redis:alpine
+    network_mode: host
+    command: redis-server --port 6379
+
+  redis-queue:
+    image: docker.io/redis:alpine
+    network_mode: host
+    command: redis-server --port 6381
+
+  frappe:
+    image: docker.io/frappe/bench:latest
+    command: sleep infinity
+    network_mode: host
+    environment:
+      - SHELL=/bin/bash
+    volumes:
+      - ..:/workspace:cached
+    working_dir: /workspace/development
     depends_on:
       mariadb:
         condition: service_healthy
@@ -21,41 +44,6 @@ services:
         condition: service_started
       redis-queue:
         condition: service_started
-    networks:
-      - frappe-net
-
-  mariadb:
-    image: mariadb:10.8
-    command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-      - --skip-character-set-client-handshake
-      - --skip-innodb-read-only-compressed
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-admin}
-    volumes:
-      - mariadb-data:/var/lib/mysql
-    networks:
-      - frappe-net
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-admin}"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-
-  redis-cache:
-    image: redis:alpine
-    networks:
-      - frappe-net
-
-  redis-queue:
-    image: redis:alpine
-    networks:
-      - frappe-net
 
 volumes:
-  workspace:
   mariadb-data:
-
-networks:
-  frappe-net:

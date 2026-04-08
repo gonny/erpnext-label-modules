@@ -36,3 +36,5 @@ Thumbs.db
 
 # detect-secrets baseline
 .secrets.baseline
+
+frappe-bench/logs/

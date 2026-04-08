@@ -1,5 +1,5 @@
 {
-  "mcpServers": {
+	"servers": {
     "github": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-github"],
@@ -26,5 +26,7 @@
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp"]
     }
-  }
+  },
+	"inputs": [
+	]
 }
