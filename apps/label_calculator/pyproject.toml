@@ -16,7 +16,7 @@ dev = [
     "ruff==0.4.4",
     "mypy==1.10.0",
     "pre-commit==3.7.0",
-    "pip-audit==2.7.3",
+    "pip-audit==2.10.0",
     "pytest==8.2.0",
     "pytest-cov==5.0.0",
     "frappe-mcp==0.1.0",
