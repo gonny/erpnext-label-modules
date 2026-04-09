@@ -1,7 +1,3 @@
----
-name: project-convention-errata-skill
-description: This skill is errata for common pitfalls on how to develop module for Frappe, ERPNext 16 and surrounded tooling.
----
 # Agent Guidelines — Memory Document
 
 > This document defines the mindset, principles, and operational boundaries for
@@ -9,7 +5,6 @@ description: This skill is errata for common pitfalls on how to develop module f
 > "how we work here."
 
 ---
-** Last update - April, 2026 **
 
 ## 1. Core Philosophy
 
@@ -83,12 +78,6 @@ label_calculator/
           self.unit_price = result.unit_price
           self.total_price = result.total_price
   ```
-  ```python
-  # BAD — fat controller
-  class LabelCalculation(Document):
-      def validate(self):
-          # 200 lines of calculation logic mixed with frappe.db calls
-  ```
 
 ### 2.2 Testing Strategy
 
@@ -103,10 +92,9 @@ Every feature needs tests at two levels:
 2. **Integration tests** (`@pytest.mark.integration`):
    - Test DocType behavior, API endpoints, workflows
    - Require running Frappe instance
-   - Run with: `bench run-tests --app <module_name>` , in our case `label_calculator` and some others in future
+   - Run with: `bench run-tests --app label_calculator`
 
 **Test-first is preferred.** Write the test, watch it fail, then implement.
-But if you implement first, tests MUST be included in the same commit.
 
 ### 2.3 Code Quality Standards
 
@@ -116,8 +104,7 @@ But if you implement first, tests MUST be included in the same commit.
 - **mypy** must pass (gradual typing — new code must be typed)
 - No `# type: ignore` without a comment explaining why
 - No `noqa` without a comment explaining why
-- No `print()` statements — use `frappe.logger()` for Frappe code, `logging`
-  for core/
+- No `print()` statements — use `frappe.logger()` for Frappe code, `logging` for core/
 
 ### 2.4 Frappe-Specific Conventions
 
@@ -158,38 +145,11 @@ But if you implement first, tests MUST be included in the same commit.
 | Use semantic commit messages | `feat:`, `fix:`, `test:`, `docs:`, `chore:`, `refactor:` |
 | Pin dependency versions | Exact versions in pyproject.toml |
 | Handle errors explicitly | Try/except with specific exceptions and logging |
-| Check Frappe docs before inventing patterns | Use `brave-search` or `context7` MCP |
+| Check Frappe docs before inventing patterns | Use `context7` MCP |
 
 ---
 
 ## 4. Workflow
-
-### How Issues Are Structured
-
-Every issue you receive will contain:
-
-1. **Context** — Why this work matters
-2. **Objective** — What we want to achieve (the WHAT)
-3. **Deliverables** — Concrete checklist of outputs
-4. **Boundaries** — What NOT to do (hard constraints)
-5. **Acceptance Criteria** — How we know it's done
-6. **Validation Tools** — Commands/tools to verify your work
-
-### Your Process
-
-```
-1. Read the full issue carefully
-2. Identify unknowns → use MCP tools to research
-3. Plan your approach (you can document it in a PR comment)
-4. Implement iteratively:
-   a. Write/update tests
-   b. Write implementation
-   c. Run validation tools
-   d. Fix issues
-   e. Repeat until all acceptance criteria pass
-5. Self-review your diff
-6. Create PR with clear description of what and why
-```
 
 ### Branch Naming
 
@@ -199,7 +159,21 @@ fix/issue-{number}-short-description
 chore/issue-{number}-short-description
 ```
 
-Example: `feature/issue-1-repository-scaffolding`
+### Your Process
+
+```
+1. Read the full issue carefully
+2. Identify unknowns → use MCP tools to research
+3. Plan your approach
+4. Implement iteratively:
+   a. Write/update tests
+   b. Write implementation
+   c. Run validation tools
+   d. Fix issues
+   e. Repeat until all acceptance criteria pass
+5. Self-review your diff
+6. Create PR with clear description of what and why
+```
 
 ---
 
@@ -211,91 +185,22 @@ A **Label Price Calculator** for a self-adhesive label printing business:
 - Customers request quotes for custom labels
 - Price depends on: material, dimensions, shape, quantity, printing method,
   number of colors, finishing (lamination, varnish), die-cut complexity
-- The calculator must integrate with ERPNext's sales flow:
+- Integrates with ERPNext's sales flow:
   Quotation → Sales Order → Delivery Note → Sales Invoice
 
-### Technology Stack
-
-| Layer | Technology | Version |
-|---|---|---|
-| Framework | Frappe Framework | v16 (version-16 branch) |
-| ERP | ERPNext CE | v16 (version-16 branch) |
-| Database | MariaDB | 10.8+ |
-| Cache | Redis | Alpine |
-| Language | Python | 3.11+ |
-| Runtime | Node.js | 18+ |
-| Backend UI | Frappe Desk v16 (Tailwind, dark mode) | Native |
-| Testing | pytest + Frappe test runner | Native |
-| CI/CD | GitHub Actions | — |
-| Containerization | Docker + DevContainers | — |
-| Automation | n8n (external, future) | — |
-| AI Integration | MCP (Model Context Protocol) | 5 tools |
-
-### Key Design Decisions
-
-1. **Calculation engine is framework-agnostic** — pure Python in `core/`
-2. **ERPNext is not modified** — only extended via custom app
-3. **API-first** — all features accessible via REST API
-4. **Progressive complexity** — start simple, add features via issues
-5. **Czech locale awareness** — CZK currency, Czech rounding rules, future
-   VAT compliance
-
 ---
 
-## 6. Backlog (Out of Scope for Current Development)
-
-The following items are recognized future needs but are explicitly **NOT** in
-scope for current issues. Do not implement or prepare for these unless a
-dedicated issue is created:
-
-1. **Public-facing calculator website** — Astro 6 + Svelte islands on
-   Cloudflare Pages. Separate repository. Will consume ERPNext API.
-2. **Contact/customer import from Profit (Firebird DB)** — Migration of
-   existing invoicing data from Profit system (Firebird database) into
-   ERPNext customers, contacts, and historical documents.
-
-These will be addressed in dedicated issues when the core system is stable.
-
----
-
-## 7. Available MCP Tools Reference
+## 6. Available MCP Tools Reference
 
 | Tool | What It Does | When to Use |
 |---|---|---|
 | `github` | Manage issues, PRs, branches | Creating PRs, reading issue details |
-| `filesystem` | Read/write files in workspace | Navigating codebase, reading configs, reading Frappe source |
-| `shell` | Execute allowed commands | Running tests, linting, bench commands, DB queries via `bench console` / `bench mariadb` |
-| `context7` | Library documentation | Fetching current API docs for Frappe Framework and Python libs |
-| `frappe-mcp` | Frappe instance interaction | Query DocType metadata, read/create documents, validate API endpoints |
-
-**No web search tool is available.** Use `context7` for documentation and
-`filesystem` to read Frappe source code directly when `context7` doesn't
-have the answer. The Frappe codebase in the workspace IS the documentation.
+| `filesystem` | Read/write files in workspace | Navigating codebase, reading configs |
+| `shell` | Execute allowed commands | Tests, linting, bench commands, DB queries |
+| `context7` | Library documentation | Frappe Framework + Python lib docs |
+| `frappe-mcp` | Frappe instance interaction | Query DocType metadata, read/create documents |
 
 ---
 
-## 8. Communication
-
-When creating a PR, include:
-- **What** changed (feature/fix description)
-- **Why** (link to issue)
-- **How** to test (specific commands)
-- **Screenshots** if UI is involved
-- **Breaking changes** if any
-
-When you encounter a problem you cannot solve:
-- Document what you tried
-- Document what tools you used
-- Document the exact error
-- Leave a comment on the issue — we will help
-
----
-
-## 9. Errata update
-- When you encounter pitfail, or something you thaught you know and the reality is different, then update this file concisely.
-
----
-
-*This document is version-controlled and will evolve. When instructions in a
-specific issue conflict with this document, the issue takes precedence for
-that specific task.*
+*This document is version-controlled. When instructions in a specific issue
+conflict with this document, the issue takes precedence for that specific task.*

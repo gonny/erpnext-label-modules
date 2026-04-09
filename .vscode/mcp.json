@@ -1,0 +1,32 @@
+{
+	"servers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/workspace"
+      ]
+    },
+    "shell": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-shell"],
+      "env": {
+        "ALLOWED_COMMANDS": "bench,pytest,ruff,mypy,pre-commit,pip,pip-audit,curl,cat,ls,find,grep,echo,pwd,cd"
+      }
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"]
+    }
+  },
+	"inputs": [
+	]
+}

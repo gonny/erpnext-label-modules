@@ -1,0 +1,17 @@
+from . import (
+    account_move,
+    account_move_line,
+    label_calculator,
+    label_machine,
+    label_material,
+    label_material_group,
+    label_material_tier_override,
+    label_pricing_profile,
+    label_production_tier,
+    partner_discount_tier,
+    product_template,
+    res_config_settings,
+    res_partner,
+    sale_order,
+    sale_order_line,
+)

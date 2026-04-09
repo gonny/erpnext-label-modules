@@ -1,0 +1,49 @@
+services:
+  mariadb:
+    image: docker.io/mariadb:lts
+    network_mode: host
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
+      - --skip-innodb-read-only-compressed
+      - --port=3306
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-123}
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    healthcheck:
+      test: mariadb-admin ping -h 127.0.0.1 -u root -p123
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis-cache:
+    image: docker.io/redis:alpine
+    network_mode: host
+    command: redis-server --port 6379
+
+  redis-queue:
+    image: docker.io/redis:alpine
+    network_mode: host
+    command: redis-server --port 6381
+
+  frappe:
+    image: docker.io/frappe/bench:latest
+    command: sleep infinity
+    network_mode: host
+    environment:
+      - SHELL=/bin/bash
+    volumes:
+      - ..:/workspace:cached
+    working_dir: /workspace/development
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      redis-cache:
+        condition: service_started
+      redis-queue:
+        condition: service_started
+
+volumes:
+  mariadb-data:
