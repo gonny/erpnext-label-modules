@@ -1,0 +1,96 @@
+[
+  {
+    "doctype": "Custom Field",
+    "dt": "Quotation Item",
+    "fieldname": "label_width_mm",
+    "fieldtype": "Float",
+    "insert_after": "description",
+    "label": "Label Width (mm)",
+    "module": "Label Calculator"
+  },
+  {
+    "doctype": "Custom Field",
+    "dt": "Quotation Item",
+    "fieldname": "label_height_mm",
+    "fieldtype": "Float",
+    "insert_after": "label_width_mm",
+    "label": "Label Height (mm)",
+    "module": "Label Calculator"
+  },
+  {
+    "doctype": "Custom Field",
+    "dt": "Quotation Item",
+    "fieldname": "label_material",
+    "fieldtype": "Link",
+    "insert_after": "label_height_mm",
+    "label": "Label Material",
+    "options": "Label Material",
+    "module": "Label Calculator"
+  },
+  {
+    "doctype": "Custom Field",
+    "dt": "Quotation Item",
+    "fieldname": "label_addon",
+    "fieldtype": "Link",
+    "insert_after": "label_material",
+    "label": "Label Addon",
+    "options": "Label Material",
+    "module": "Label Calculator"
+  },
+  {
+    "doctype": "Custom Field",
+    "dt": "Quotation Item",
+    "fieldname": "label_description",
+    "fieldtype": "Data",
+    "insert_after": "label_addon",
+    "label": "Label Description",
+    "module": "Label Calculator"
+  },
+  {
+    "doctype": "Custom Field",
+    "dt": "Sales Invoice Item",
+    "fieldname": "label_width_mm",
+    "fieldtype": "Float",
+    "insert_after": "description",
+    "label": "Label Width (mm)",
+    "module": "Label Calculator"
+  },
+  {
+    "doctype": "Custom Field",
+    "dt": "Sales Invoice Item",
+    "fieldname": "label_height_mm",
+    "fieldtype": "Float",
+    "insert_after": "label_width_mm",
+    "label": "Label Height (mm)",
+    "module": "Label Calculator"
+  },
+  {
+    "doctype": "Custom Field",
+    "dt": "Sales Invoice Item",
+    "fieldname": "label_material",
+    "fieldtype": "Link",
+    "insert_after": "label_height_mm",
+    "label": "Label Material",
+    "options": "Label Material",
+    "module": "Label Calculator"
+  },
+  {
+    "doctype": "Custom Field",
+    "dt": "Sales Invoice Item",
+    "fieldname": "label_addon",
+    "fieldtype": "Link",
+    "insert_after": "label_material",
+    "label": "Label Addon",
+    "options": "Label Material",
+    "module": "Label Calculator"
+  },
+  {
+    "doctype": "Custom Field",
+    "dt": "Sales Invoice Item",
+    "fieldname": "label_description",
+    "fieldtype": "Data",
+    "insert_after": "label_addon",
+    "label": "Label Description",
+    "module": "Label Calculator"
+  }
+]

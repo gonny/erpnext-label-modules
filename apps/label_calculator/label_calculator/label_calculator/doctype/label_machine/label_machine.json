@@ -1,0 +1,125 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "field:machine_name",
+ "creation": "2026-04-09 10:00:00.000000",
+ "doctype": "DocType",
+ "document_type": "Setup",
+ "engine": "InnoDB",
+ "field_order": [
+  "machine_name",
+  "machine_type",
+  "column_break_1",
+  "active",
+  "section_amortization",
+  "purchase_price",
+  "lifetime_hours",
+  "column_break_2",
+  "maintenance_annual",
+  "energy_cost_per_hr",
+  "working_hours_per_year",
+  "section_computed",
+  "hourly_rate"
+ ],
+ "fields": [
+  {
+   "fieldname": "machine_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Machine Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "machine_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Machine Type",
+   "options": "Laser\nPlotter\nPrinter\nHeatpress",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "active",
+   "fieldtype": "Check",
+   "label": "Active"
+  },
+  {
+   "fieldname": "section_amortization",
+   "fieldtype": "Section Break",
+   "label": "Amortization Parameters"
+  },
+  {
+   "fieldname": "purchase_price",
+   "fieldtype": "Currency",
+   "label": "Purchase Price (CZK)"
+  },
+  {
+   "default": "10000",
+   "fieldname": "lifetime_hours",
+   "fieldtype": "Float",
+   "label": "Lifetime Hours"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "maintenance_annual",
+   "fieldtype": "Currency",
+   "label": "Annual Maintenance (CZK)"
+  },
+  {
+   "fieldname": "energy_cost_per_hr",
+   "fieldtype": "Currency",
+   "label": "Energy Cost per Hour (CZK)"
+  },
+  {
+   "default": "2000",
+   "fieldname": "working_hours_per_year",
+   "fieldtype": "Float",
+   "label": "Working Hours per Year"
+  },
+  {
+   "fieldname": "section_computed",
+   "fieldtype": "Section Break",
+   "label": "Computed"
+  },
+  {
+   "fieldname": "hourly_rate",
+   "fieldtype": "Currency",
+   "label": "Hourly Rate (CZK)",
+   "read_only": 1
+  }
+ ],
+ "links": [],
+ "modified": "2026-04-09 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Label Calculator",
+ "name": "Label Machine",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "import": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "ASC",
+ "states": []
+}

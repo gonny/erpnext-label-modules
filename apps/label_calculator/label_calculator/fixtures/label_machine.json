@@ -1,0 +1,35 @@
+[
+  {
+    "doctype": "Label Machine",
+    "machine_name": "Epilog Laser",
+    "machine_type": "Laser",
+    "purchase_price": 400000,
+    "lifetime_hours": 15000,
+    "maintenance_annual": 15000,
+    "energy_cost_per_hr": 8.0,
+    "working_hours_per_year": 2000,
+    "active": 1
+  },
+  {
+    "doctype": "Label Machine",
+    "machine_name": "TTR Tiskárna",
+    "machine_type": "Printer",
+    "purchase_price": 80000,
+    "lifetime_hours": 10000,
+    "maintenance_annual": 5000,
+    "energy_cost_per_hr": 3.0,
+    "working_hours_per_year": 2000,
+    "active": 1
+  },
+  {
+    "doctype": "Label Machine",
+    "machine_name": "Heatpress",
+    "machine_type": "Heatpress",
+    "purchase_price": 25000,
+    "lifetime_hours": 8000,
+    "maintenance_annual": 2000,
+    "energy_cost_per_hr": 2.0,
+    "working_hours_per_year": 2000,
+    "active": 1
+  }
+]
