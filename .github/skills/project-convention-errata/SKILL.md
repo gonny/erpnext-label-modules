@@ -1,6 +1,6 @@
 ---
 name: project-convention-errata-skill
-description: This skill is errata for common pitfalls on how to develop module for ERPNext 16 and surrounded tooling.
+description: This skill is errata for common pitfalls on how to develop module for Frappe, ERPNext 16 and surrounded tooling.
 ---
 # Agent Guidelines — Memory Document
 
@@ -103,7 +103,7 @@ Every feature needs tests at two levels:
 2. **Integration tests** (`@pytest.mark.integration`):
    - Test DocType behavior, API endpoints, workflows
    - Require running Frappe instance
-   - Run with: `bench run-tests --app label_calculator`
+   - Run with: `bench run-tests --app <module_name>` , in our case `label_calculator` and some others in future
 
 **Test-first is preferred.** Write the test, watch it fail, then implement.
 But if you implement first, tests MUST be included in the same commit.
