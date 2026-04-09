@@ -5,175 +5,126 @@ import pytest
 from label_calculator.core.models import (
     AddonInput,
     JobInput,
-    MachineInput,
     MaterialInput,
-    MaterialMachineParams,
     TaxConfig,
     TierInput,
 )
 
 # ---------------------------------------------------------------------------
-# Materials
+# Materials — production-accurate values from Excel/Odoo
 # ---------------------------------------------------------------------------
 
 
 @pytest.fixture
-def vinyl_material() -> MaterialInput:
-    """White vinyl sheet 305×610mm, 45 CZK per sheet."""
+def leatherette_material() -> MaterialInput:
+    """Koženka černo/stříbrná — 600×300mm sheet, 310 CZK incl. VAT."""
     return MaterialInput(
-        price_per_unit=45.0,
-        sheet_width=305.0,
-        sheet_height=610.0,
-        material_type="Sheet",
-        cut_margin_pct=8.0,
-        name="Bílý vinyl",
-        color_name="Bílá",
+        purchase_price=310.0,
+        purchase_vat_included=True,
+        purchase_vat_pct=21.0,
+        sheet_width=600.0,
+        sheet_height=300.0,
+        material_type="sheet",
+        name="Koženka černo/stříbrná",
     )
 
 
 @pytest.fixture
-def satin_ribbon() -> MaterialInput:
-    """Satin ribbon 25mm, roll 100m, 0.80 CZK/m."""
-    return MaterialInput(
-        price_per_unit=0.80,
-        sheet_width=25.0,
-        sheet_height=100_000.0,  # 100m in mm
-        material_type="Roll",
-        cut_margin_pct=0.0,
-        name="Saténová stuha",
-        color_name="Bílá",
-    )
-
-
-@pytest.fixture
-def satin_ribbon_with_addon() -> MaterialInput:
-    """Satin ribbon with silver TTR addon."""
-    return MaterialInput(
-        price_per_unit=0.80,
-        sheet_width=25.0,
-        sheet_height=100_000.0,
-        material_type="Roll",
-        cut_margin_pct=0.0,
-        name="Saténová stuha",
-        color_name="Bílá",
-        addons=[
-            AddonInput(
-                price_per_unit=0.90,
-                sheet_width=25.0,
-                name="Páska stříbrná",
-                color_name="stříbrný",
-            ),
-        ],
-    )
-
-
-@pytest.fixture
-def silver_addon() -> AddonInput:
-    """Silver TTR ribbon addon."""
+def silver_ttr_addon() -> AddonInput:
+    """Stříbrná textilní TTR ribbon — 69mm × 200m, 441 CZK ex-VAT."""
     return AddonInput(
-        price_per_unit=0.90,
-        sheet_width=25.0,
-        name="Páska stříbrná",
+        purchase_price=441.0,
+        purchase_vat_included=False,
+        purchase_vat_pct=21.0,
+        roll_width_mm=69.0,
+        roll_length_m=200.0,
         color_name="stříbrný",
     )
 
 
-# ---------------------------------------------------------------------------
-# Machines
-# ---------------------------------------------------------------------------
-
-
 @pytest.fixture
-def epilog_laser() -> MachineInput:
-    """Epilog Laser — hourly rate ~42.17 CZK."""
-    return MachineInput(hourly_rate=42.1667)
-
-
-@pytest.fixture
-def ttr_printer() -> MachineInput:
-    """TTR Printer — hourly rate ~13.5 CZK."""
-    return MachineInput(hourly_rate=13.5)
-
-
-# ---------------------------------------------------------------------------
-# Material Machine Params
-# ---------------------------------------------------------------------------
-
-
-@pytest.fixture
-def vinyl_laser_params() -> MaterialMachineParams:
-    """White vinyl on Epilog Laser."""
-    return MaterialMachineParams(cut_speed_mm_per_sec=45.0, kerf_mm=0.15)
-
-
-@pytest.fixture
-def satin_ttr_params() -> MaterialMachineParams:
-    """Satin ribbon on TTR printer — zero kerf."""
-    return MaterialMachineParams(cut_speed_mm_per_sec=100.0, kerf_mm=0.0)
-
-
-# ---------------------------------------------------------------------------
-# Tiers
-# ---------------------------------------------------------------------------
-
-
-@pytest.fixture
-def prototype_tier() -> TierInput:
-    """Prototype tier: 1-10 pcs, high margin, high waste."""
-    return TierInput(
-        pieces_per_hour=150.0,
-        margin_pct=50.0,
-        waste_test_pieces=5,
-        waste_test_pct=15.0,
-        waste_pruning_pct=12.0,
+def satin_material() -> MaterialInput:
+    """Satén bílá 20mm — 200m roll, 509 CZK ex-VAT."""
+    return MaterialInput(
+        purchase_price=509.0,
+        purchase_vat_included=False,
+        purchase_vat_pct=21.0,
+        roll_width_mm=20.0,
+        roll_length_m=200.0,
+        material_type="roll",
+        name="Satén bílá 20mm",
     )
 
 
 @pytest.fixture
-def small_batch_tier() -> TierInput:
-    """Small batch tier: 11-100 pcs."""
+def satin_with_ttr(satin_material: MaterialInput, silver_ttr_addon: AddonInput) -> MaterialInput:
+    """Satén bílá 20mm + TTR stříbrná addon."""
+    return MaterialInput(
+        purchase_price=satin_material.purchase_price,
+        purchase_vat_included=satin_material.purchase_vat_included,
+        purchase_vat_pct=satin_material.purchase_vat_pct,
+        roll_width_mm=satin_material.roll_width_mm,
+        roll_length_m=satin_material.roll_length_m,
+        material_type=satin_material.material_type,
+        name=satin_material.name,
+        addons=[silver_ttr_addon],
+    )
+
+
+# ---------------------------------------------------------------------------
+# Tiers — production-accurate values
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture
+def leatherette_tier_do30() -> TierInput:
+    """Koženka tier "Do 30": 1-29 pcs, 80 pcs/hr, 320% margin."""
     return TierInput(
-        pieces_per_hour=400.0,
-        margin_pct=35.0,
-        waste_test_pieces=3,
-        waste_test_pct=10.0,
-        waste_pruning_pct=10.0,
+        pieces_per_hour=80,
+        margin_pct=320,
+        waste_test_pct=10,
+        waste_pruning_pct=15,
+        min_quantity=1,
+        max_quantity=29,
     )
 
 
 @pytest.fixture
-def standard_tier() -> TierInput:
-    """Standard tier: 101-500 pcs."""
+def leatherette_tier_do100() -> TierInput:
+    """Koženka tier "Do 100": 30-99 pcs, 100 pcs/hr, 310% margin."""
     return TierInput(
-        pieces_per_hour=800.0,
-        margin_pct=25.0,
-        waste_test_pieces=2,
-        waste_test_pct=8.0,
-        waste_pruning_pct=8.0,
+        pieces_per_hour=100,
+        margin_pct=310,
+        waste_test_pct=10,
+        waste_pruning_pct=15,
+        min_quantity=30,
+        max_quantity=99,
     )
 
 
 @pytest.fixture
-def large_batch_tier() -> TierInput:
-    """Large batch tier: 501+ pcs."""
+def leatherette_tier_do500() -> TierInput:
+    """Koženka tier "Do 500": 100-499 pcs, 120 pcs/hr, 300% margin."""
     return TierInput(
-        pieces_per_hour=1200.0,
-        margin_pct=18.0,
-        waste_test_pieces=1,
-        waste_test_pct=5.0,
-        waste_pruning_pct=5.0,
+        pieces_per_hour=120,
+        margin_pct=300,
+        waste_test_pct=10,
+        waste_pruning_pct=12,
+        min_quantity=100,
+        max_quantity=499,
     )
 
 
 @pytest.fixture
-def satin_tier() -> TierInput:
-    """Satin TTR tier: no pruning waste."""
+def satin_tier_do200() -> TierInput:
+    """Satén tier "Do 200": 1-199 pcs, 800 pcs/hr, 320% margin."""
     return TierInput(
-        pieces_per_hour=200.0,
-        margin_pct=45.0,
-        waste_test_pieces=3,
-        waste_test_pct=10.0,
-        waste_pruning_pct=0.0,
+        pieces_per_hour=800,
+        margin_pct=320,
+        waste_test_pct=10,
+        waste_pruning_pct=30,  # ignored for TTR
+        min_quantity=1,
+        max_quantity=199,
     )
 
 
@@ -184,13 +135,13 @@ def satin_tier() -> TierInput:
 
 @pytest.fixture
 def default_tax() -> TaxConfig:
-    """Default tax config: 15% income tax, grossup enabled."""
+    """Default: 15% income tax, grossup enabled."""
     return TaxConfig(income_tax_rate=15.0, apply_material_grossup=True)
 
 
 @pytest.fixture
 def no_tax() -> TaxConfig:
-    """Tax config with grossup disabled."""
+    """Grossup disabled."""
     return TaxConfig(income_tax_rate=15.0, apply_material_grossup=False)
 
 
@@ -200,30 +151,12 @@ def no_tax() -> TaxConfig:
 
 
 @pytest.fixture
-def laser_job_50x30() -> JobInput:
-    """Laser job: 50×30mm, 100 pcs."""
-    return JobInput(
-        width=50.0,
-        height=30.0,
-        quantity=100,
-        copies=1,
-        production_type="laser",
-        operator_rate=200.0,
-        setup_time_min=5.0,
-        operator_time_per_unit_sec=0.0,
-    )
+def laser_job_30x20() -> JobInput:
+    """Laser job: 30×20mm, 10 pcs."""
+    return JobInput(width=30.0, height=20.0, quantity=10, production_type="laser")
 
 
 @pytest.fixture
-def ttr_job_25x80() -> JobInput:
-    """TTR job: 25×80mm, 100 pcs."""
-    return JobInput(
-        width=25.0,
-        height=80.0,
-        quantity=100,
-        copies=1,
-        production_type="thermotransfer",
-        operator_rate=200.0,
-        setup_time_min=5.0,
-        operator_time_per_unit_sec=0.0,
-    )
+def ttr_job_20x40() -> JobInput:
+    """TTR job: 20×40mm (ribbon width × print length), 10 pcs."""
+    return JobInput(width=20.0, height=40.0, quantity=10, production_type="thermotransfer")

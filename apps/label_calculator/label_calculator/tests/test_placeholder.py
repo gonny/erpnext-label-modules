@@ -7,50 +7,27 @@ so they run in the fast, database-free CI job.
 import pytest
 
 from label_calculator.core.calculator import calculate
-from label_calculator.core.models import (
-    CalcResult,
-    JobInput,
-    MachineInput,
-    MaterialInput,
-    MaterialMachineParams,
-    TierInput,
-)
+from label_calculator.core.models import CalcResult, JobInput, MaterialInput, TierInput
 
 
 @pytest.mark.unit
 def test_calculate_returns_calc_result(
-    vinyl_material: MaterialInput,
-    epilog_laser: MachineInput,
-    vinyl_laser_params: MaterialMachineParams,
-    small_batch_tier: TierInput,
-    laser_job_50x30: JobInput,
+    leatherette_material: MaterialInput,
+    leatherette_tier_do30: TierInput,
 ) -> None:
     """calculate() should return a CalcResult for valid input."""
-    result = calculate(
-        job=laser_job_50x30,
-        material=vinyl_material,
-        machine=epilog_laser,
-        params=vinyl_laser_params,
-        tier=small_batch_tier,
-    )
+    job = JobInput(width=30, height=20, quantity=10, production_type="laser")
+    result = calculate(job, leatherette_material, leatherette_tier_do30)
     assert isinstance(result, CalcResult)
 
 
 @pytest.mark.unit
 def test_calculate_total_price_positive(
-    vinyl_material: MaterialInput,
-    epilog_laser: MachineInput,
-    vinyl_laser_params: MaterialMachineParams,
-    small_batch_tier: TierInput,
-    laser_job_50x30: JobInput,
+    leatherette_material: MaterialInput,
+    leatherette_tier_do30: TierInput,
 ) -> None:
     """Total price must be positive for valid inputs."""
-    result = calculate(
-        job=laser_job_50x30,
-        material=vinyl_material,
-        machine=epilog_laser,
-        params=vinyl_laser_params,
-        tier=small_batch_tier,
-    )
+    job = JobInput(width=30, height=20, quantity=10, production_type="laser")
+    result = calculate(job, leatherette_material, leatherette_tier_do30)
     assert result.total_price > 0
     assert result.unit_price > 0
