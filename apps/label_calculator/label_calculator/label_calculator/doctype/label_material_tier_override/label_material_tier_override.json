@@ -1,0 +1,69 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "autoname": "format:{material_id}-{tier_id}",
+ "creation": "2026-04-09 10:00:00.000000",
+ "doctype": "DocType",
+ "document_type": "Setup",
+ "engine": "InnoDB",
+ "field_order": [
+  "material_id",
+  "tier_id",
+  "column_break_1",
+  "pieces_per_hour_override"
+ ],
+ "fields": [
+  {
+   "fieldname": "material_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Material",
+   "options": "Label Material",
+   "reqd": 1
+  },
+  {
+   "fieldname": "tier_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Production Tier",
+   "options": "Label Production Tier",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pieces_per_hour_override",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Pieces per Hour (Override)",
+   "reqd": 1
+  }
+ ],
+ "links": [],
+ "modified": "2026-04-09 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Label Calculator",
+ "name": "Label Material Tier Override",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "import": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "ASC",
+ "states": []
+}

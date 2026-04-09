@@ -17,4 +17,34 @@ app_license = "MIT"
 # scheduler_events = {}
 
 # ─── Fixtures ────────────────────────────────────────────────────────────────
-# fixtures = []
+fixtures = [
+    "Label Material Group",
+    "Label Material",
+    "Label Machine",
+    "Label Material Machine Params",
+    "Label Pricing Profile",
+    "Label Production Tier",
+    "Label Material Tier Override",
+    "Label Calculator Settings",
+    {
+        "dt": "Custom Field",
+        "filters": [
+            [
+                "name",
+                "in",
+                [
+                    "Quotation Item-label_width_mm",
+                    "Quotation Item-label_height_mm",
+                    "Quotation Item-label_material",
+                    "Quotation Item-label_addon",
+                    "Quotation Item-label_description",
+                    "Sales Invoice Item-label_width_mm",
+                    "Sales Invoice Item-label_height_mm",
+                    "Sales Invoice Item-label_material",
+                    "Sales Invoice Item-label_addon",
+                    "Sales Invoice Item-label_description",
+                ],
+            ],
+        ],
+    },
+]

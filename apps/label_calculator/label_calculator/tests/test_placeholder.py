@@ -6,34 +6,51 @@ so they run in the fast, database-free CI job.
 
 import pytest
 
-from label_calculator.core.calculator import LabelSpec, PriceResult, calculate_label_price
+from label_calculator.core.calculator import calculate
+from label_calculator.core.models import (
+    CalcResult,
+    JobInput,
+    MachineInput,
+    MaterialInput,
+    MaterialMachineParams,
+    TierInput,
+)
 
 
 @pytest.mark.unit
-def test_calculate_label_price_returns_price_result(sample_label_spec: LabelSpec) -> None:
-    """calculate_label_price should return a PriceResult for valid input."""
-    result = calculate_label_price(sample_label_spec)
-    assert isinstance(result, PriceResult)
+def test_calculate_returns_calc_result(
+    vinyl_material: MaterialInput,
+    epilog_laser: MachineInput,
+    vinyl_laser_params: MaterialMachineParams,
+    small_batch_tier: TierInput,
+    laser_job_50x30: JobInput,
+) -> None:
+    """calculate() should return a CalcResult for valid input."""
+    result = calculate(
+        job=laser_job_50x30,
+        material=vinyl_material,
+        machine=epilog_laser,
+        params=vinyl_laser_params,
+        tier=small_batch_tier,
+    )
+    assert isinstance(result, CalcResult)
 
 
 @pytest.mark.unit
-def test_calculate_label_price_total_equals_unit_times_quantity(sample_label_spec: LabelSpec) -> None:
-    """Total price must equal unit_price x quantity (within float rounding)."""
-    result = calculate_label_price(sample_label_spec)
-    expected_total = round(result.unit_price * sample_label_spec.quantity, 2)
-    assert result.total_price == expected_total
-
-
-@pytest.mark.unit
-def test_calculate_label_price_minimum_unit_price() -> None:
-    """Very small labels should still get a minimum unit price of 1.0."""
-    tiny_spec = LabelSpec(width_mm=1.0, height_mm=1.0, quantity=100)
-    result = calculate_label_price(tiny_spec)
-    assert result.unit_price >= 1.0
-
-
-@pytest.mark.unit
-def test_calculate_label_price_currency_is_czk(sample_label_spec: LabelSpec) -> None:
-    """Default currency for all calculations is CZK."""
-    result = calculate_label_price(sample_label_spec)
-    assert result.currency == "CZK"
+def test_calculate_total_price_positive(
+    vinyl_material: MaterialInput,
+    epilog_laser: MachineInput,
+    vinyl_laser_params: MaterialMachineParams,
+    small_batch_tier: TierInput,
+    laser_job_50x30: JobInput,
+) -> None:
+    """Total price must be positive for valid inputs."""
+    result = calculate(
+        job=laser_job_50x30,
+        material=vinyl_material,
+        machine=epilog_laser,
+        params=vinyl_laser_params,
+        tier=small_batch_tier,
+    )
+    assert result.total_price > 0
+    assert result.unit_price > 0

@@ -1,0 +1,22 @@
+[
+  {
+    "doctype": "Label Pricing Profile",
+    "profile_name": "Standard",
+    "code": "standard",
+    "is_default": 1,
+    "is_vip": 0,
+    "description": "Výchozí cenový profil",
+    "active": 1,
+    "sequence": 1
+  },
+  {
+    "doctype": "Label Pricing Profile",
+    "profile_name": "VIP Velkoodběr",
+    "code": "vip1",
+    "is_default": 0,
+    "is_vip": 1,
+    "description": "VIP cenový profil pro velkoodběratele",
+    "active": 1,
+    "sequence": 2
+  }
+]
