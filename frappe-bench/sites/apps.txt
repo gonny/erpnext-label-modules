@@ -1,2 +1,3 @@
 frappe
 erpnext
+label_calculator

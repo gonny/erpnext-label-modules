@@ -1,6 +1,7 @@
 [
   {
     "doctype": "Label Machine",
+    "name": "Epilog Laser",
     "machine_name": "Epilog Laser",
     "machine_type": "Laser",
     "purchase_price": 400000,
@@ -12,6 +13,7 @@
   },
   {
     "doctype": "Label Machine",
+    "name": "TTR Tiskárna",
     "machine_name": "TTR Tiskárna",
     "machine_type": "Printer",
     "purchase_price": 80000,
@@ -23,6 +25,7 @@
   },
   {
     "doctype": "Label Machine",
+    "name": "Heatpress",
     "machine_name": "Heatpress",
     "machine_type": "Heatpress",
     "purchase_price": 25000,

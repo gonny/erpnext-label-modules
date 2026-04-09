@@ -1,6 +1,7 @@
 [
   {
     "doctype": "Label Material Machine Params",
+    "name": "Bílý vinyl 305×610mm - Epilog Laser",
     "material_id": "Bílý vinyl 305×610mm",
     "machine_id": "Epilog Laser",
     "cut_speed_mm_per_sec": 45,
@@ -8,6 +9,7 @@
   },
   {
     "doctype": "Label Material Machine Params",
+    "name": "Transparentní vinyl 305×610mm - Epilog Laser",
     "material_id": "Transparentní vinyl 305×610mm",
     "machine_id": "Epilog Laser",
     "cut_speed_mm_per_sec": 35,
@@ -15,6 +17,7 @@
   },
   {
     "doctype": "Label Material Machine Params",
+    "name": "Bílý papír A4 - Epilog Laser",
     "material_id": "Bílý papír A4",
     "machine_id": "Epilog Laser",
     "cut_speed_mm_per_sec": 60,
@@ -22,6 +25,7 @@
   },
   {
     "doctype": "Label Material Machine Params",
+    "name": "Saténová stuha bílá 25mm - TTR Tiskárna",
     "material_id": "Saténová stuha bílá 25mm",
     "machine_id": "TTR Tiskárna",
     "cut_speed_mm_per_sec": 100,
@@ -29,6 +33,7 @@
   },
   {
     "doctype": "Label Material Machine Params",
+    "name": "Saténová stuha bílá 30mm - TTR Tiskárna",
     "material_id": "Saténová stuha bílá 30mm",
     "machine_id": "TTR Tiskárna",
     "cut_speed_mm_per_sec": 100,
@@ -36,6 +41,7 @@
   },
   {
     "doctype": "Label Material Machine Params",
+    "name": "Saténová stuha černá 25mm - TTR Tiskárna",
     "material_id": "Saténová stuha černá 25mm",
     "machine_id": "TTR Tiskárna",
     "cut_speed_mm_per_sec": 100,

@@ -3,6 +3,7 @@
     "doctype": "Label Material Group",
     "group_name": "Saténové stuhy",
     "description": "Saténové stuhy pro termotransferový tisk",
+    "name": "Saténové stuhy",
     "cut_margin_pct": 0,
     "active": 1
   },
@@ -10,6 +11,7 @@
     "doctype": "Label Material Group",
     "group_name": "Nylonové stuhy",
     "description": "Nylonové stuhy pro termotransferový tisk",
+    "name": "Nylonové stuhy",
     "cut_margin_pct": 0,
     "active": 1
   },
@@ -17,6 +19,7 @@
     "doctype": "Label Material Group",
     "group_name": "Vinyl – laser",
     "description": "Vinylové materiály pro laserové řezání",
+    "name": "Vinyl – laser",
     "cut_margin_pct": 8,
     "active": 1
   },
@@ -24,6 +27,7 @@
     "doctype": "Label Material Group",
     "group_name": "Papír – laser",
     "description": "Papírové materiály pro laserové řezání",
+    "name": "Papír – laser",
     "cut_margin_pct": 5,
     "active": 1
   }

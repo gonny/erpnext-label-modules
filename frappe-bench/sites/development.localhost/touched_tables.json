@@ -1,12 +1,20 @@
 [
+    "tabLabel Machine",
     "tabCustom Field",
-    "tabVersion",
-    "tabPortal",
-    "tabCustom",
-    "tabInstalled",
-    "tabNavbar",
+    "tabPortal Menu Item",
+    "tabTag Link",
     "tabSingles",
-    "tabInstalled Application",
+    "tabCustom",
+    "tabLabel Material",
+    "tabTag",
+    "tabLabel Pricing Profile",
+    "tabLabel Production Tier",
+    "tabNavbar",
+    "tabPortal",
     "tabNavbar Item",
-    "tabPortal Menu Item"
+    "tabInstalled Application",
+    "tabLabel Material Machine Params",
+    "tabLabel",
+    "tabLabel Material Group",
+    "tabInstalled"
 ]
