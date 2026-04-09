@@ -1,6 +1,7 @@
 [
   {
     "doctype": "Label Material",
+    "name": "Saténová stuha bílá 25mm",
     "material_name": "Saténová stuha bílá 25mm",
     "group_id": "Saténové stuhy",
     "material_type": "Roll",
@@ -14,6 +15,7 @@
   },
   {
     "doctype": "Label Material",
+    "name": "Saténová stuha bílá 30mm",
     "material_name": "Saténová stuha bílá 30mm",
     "group_id": "Saténové stuhy",
     "material_type": "Roll",
@@ -27,6 +29,7 @@
   },
   {
     "doctype": "Label Material",
+    "name": "Saténová stuha černá 25mm",
     "material_name": "Saténová stuha černá 25mm",
     "group_id": "Saténové stuhy",
     "material_type": "Roll",
@@ -40,6 +43,7 @@
   },
   {
     "doctype": "Label Material",
+    "name": "Bílý vinyl 305×610mm",
     "material_name": "Bílý vinyl 305×610mm",
     "group_id": "Vinyl – laser",
     "material_type": "Sheet",
@@ -53,6 +57,7 @@
   },
   {
     "doctype": "Label Material",
+    "name": "Transparentní vinyl 305×610mm",
     "material_name": "Transparentní vinyl 305×610mm",
     "group_id": "Vinyl – laser",
     "material_type": "Sheet",
@@ -66,6 +71,7 @@
   },
   {
     "doctype": "Label Material",
+    "name": "Bílý papír A4",
     "material_name": "Bílý papír A4",
     "group_id": "Papír – laser",
     "material_type": "Sheet",
@@ -79,6 +85,7 @@
   },
   {
     "doctype": "Label Material",
+    "name": "Páska černá",
     "material_name": "Páska černá",
     "group_id": "Saténové stuhy",
     "material_type": "Roll",
@@ -92,6 +99,7 @@
   },
   {
     "doctype": "Label Material",
+    "name": "Páska stříbrná",
     "material_name": "Páska stříbrná",
     "group_id": "Saténové stuhy",
     "material_type": "Roll",
@@ -105,6 +113,7 @@
   },
   {
     "doctype": "Label Material",
+    "name": "Páska zlatá",
     "material_name": "Páska zlatá",
     "group_id": "Saténové stuhy",
     "material_type": "Roll",

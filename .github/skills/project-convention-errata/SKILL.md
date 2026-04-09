@@ -126,6 +126,7 @@ But if you implement first, tests MUST be included in the same commit.
 - **API methods** use `@frappe.whitelist()` and are in `api/` directory
 - **Hooks** are registered in `hooks.py`, never monkey-patched
 - **Fixtures** for test data go in `label_calculator/fixtures/`
+- - EVERY fixture MUST have a unique `name` field. Typically the same as a unique field entry
 - **Patches** for schema migrations go in `patches/` with proper naming:
   `label_calculator.patches.v0_2.add_field_to_label_calculation`
 

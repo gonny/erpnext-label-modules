@@ -2862,3 +2862,220 @@ ALTER TABLE `tabEmail Account` ADD COLUMN `company` varchar(140)
 ALTER TABLE `tabAddress` ADD COLUMN `tax_category` varchar(140), ADD COLUMN `is_your_company_address` tinyint(4) NOT NULL DEFAULT 0
 2026-04-08 18:57:20,780 WARNING database DDL Query made to DB:
 ALTER TABLE `tabContact` ADD COLUMN `is_billing_contact` tinyint(4) NOT NULL DEFAULT 0
+2026-04-09 09:47:19,900 WARNING database DDL Query made to DB:
+create table `tabLabel Material` (
+			name varchar(140) primary key,
+			creation datetime(6),
+			modified datetime(6),
+			modified_by varchar(140),
+			owner varchar(140),
+			docstatus tinyint not null default '0',
+			idx int not null default '0',
+			`material_name` varchar(140) UNIQUE,
+`group_id` varchar(140),
+`material_type` varchar(140) DEFAULT 'Sheet',
+`active` tinyint(4) NOT NULL DEFAULT 1,
+`item_link` varchar(140),
+`sheet_width` decimal(21,9) NOT NULL DEFAULT 0.0,
+`sheet_height` decimal(21,9) NOT NULL DEFAULT 0.0,
+`price_per_unit` decimal(21,9) NOT NULL DEFAULT 0.0,
+`thickness_um` decimal(21,9) NOT NULL DEFAULT 0.0,
+`color` varchar(140),
+`color_name` varchar(140),
+`_user_tags` text,
+`_comments` text,
+`_assign` text,
+`_liked_by` text,
+index creation(creation))
+			ENGINE=InnoDB
+			ROW_FORMAT=DYNAMIC
+			CHARACTER SET=utf8mb4
+			COLLATE=utf8mb4_unicode_ci
+2026-04-09 09:47:20,083 WARNING database DDL Query made to DB:
+create table `tabLabel Pricing Profile` (
+			name varchar(140) primary key,
+			creation datetime(6),
+			modified datetime(6),
+			modified_by varchar(140),
+			owner varchar(140),
+			docstatus tinyint not null default '0',
+			idx int not null default '0',
+			`profile_name` varchar(140) UNIQUE,
+`code` varchar(140) UNIQUE,
+`is_default` tinyint(4) NOT NULL DEFAULT 0,
+`is_vip` tinyint(4) NOT NULL DEFAULT 0,
+`active` tinyint(4) NOT NULL DEFAULT 1,
+`sequence` int(11) NOT NULL DEFAULT 0,
+`description` text,
+`_user_tags` text,
+`_comments` text,
+`_assign` text,
+`_liked_by` text,
+index creation(creation))
+			ENGINE=InnoDB
+			ROW_FORMAT=DYNAMIC
+			CHARACTER SET=utf8mb4
+			COLLATE=utf8mb4_unicode_ci
+2026-04-09 09:47:20,162 WARNING database DDL Query made to DB:
+create table `tabLabel Material Tier Override` (
+			name varchar(140) primary key,
+			creation datetime(6),
+			modified datetime(6),
+			modified_by varchar(140),
+			owner varchar(140),
+			docstatus tinyint not null default '0',
+			idx int not null default '0',
+			`material_id` varchar(140),
+`tier_id` varchar(140),
+`pieces_per_hour_override` decimal(21,9) NOT NULL DEFAULT 0.0,
+`_user_tags` text,
+`_comments` text,
+`_assign` text,
+`_liked_by` text,
+index creation(creation))
+			ENGINE=InnoDB
+			ROW_FORMAT=DYNAMIC
+			CHARACTER SET=utf8mb4
+			COLLATE=utf8mb4_unicode_ci
+2026-04-09 09:47:20,233 WARNING database DDL Query made to DB:
+create table `tabLabel Material Group` (
+			name varchar(140) primary key,
+			creation datetime(6),
+			modified datetime(6),
+			modified_by varchar(140),
+			owner varchar(140),
+			docstatus tinyint not null default '0',
+			idx int not null default '0',
+			`group_name` varchar(140) UNIQUE,
+`description` text,
+`cut_margin_pct` decimal(21,9) NOT NULL DEFAULT 5.0,
+`active` tinyint(4) NOT NULL DEFAULT 1,
+`_user_tags` text,
+`_comments` text,
+`_assign` text,
+`_liked_by` text,
+index creation(creation))
+			ENGINE=InnoDB
+			ROW_FORMAT=DYNAMIC
+			CHARACTER SET=utf8mb4
+			COLLATE=utf8mb4_unicode_ci
+2026-04-09 09:47:20,296 WARNING database DDL Query made to DB:
+create table `tabLabel Material Addon` (
+			name varchar(140) primary key,
+			creation datetime(6),
+			modified datetime(6),
+			modified_by varchar(140),
+			owner varchar(140),
+			docstatus tinyint not null default '0',
+			idx int not null default '0',
+			`addon_material_id` varchar(140),
+`is_default` tinyint(4) NOT NULL DEFAULT 0,
+`description` varchar(140),
+parent varchar(140),
+parentfield varchar(140),
+parenttype varchar(140),
+index parent(parent))
+			ENGINE=InnoDB
+			ROW_FORMAT=DYNAMIC
+			CHARACTER SET=utf8mb4
+			COLLATE=utf8mb4_unicode_ci
+2026-04-09 09:47:20,387 WARNING database DDL Query made to DB:
+create table `tabLabel Production Tier` (
+			name varchar(140) primary key,
+			creation datetime(6),
+			modified datetime(6),
+			modified_by varchar(140),
+			owner varchar(140),
+			docstatus tinyint not null default '0',
+			idx int not null default '0',
+			`tier_name` varchar(140),
+`group_id` varchar(140),
+`pricing_profile_id` varchar(140),
+`min_quantity` int(11) NOT NULL DEFAULT 0,
+`max_quantity` int(11) NOT NULL DEFAULT 0,
+`active` tinyint(4) NOT NULL DEFAULT 1,
+`pieces_per_hour` decimal(21,9) NOT NULL DEFAULT 0.0,
+`margin_pct` decimal(21,9) NOT NULL DEFAULT 0.0,
+`waste_test_pieces` int(11) NOT NULL DEFAULT 0,
+`waste_test_percentage` decimal(21,9) NOT NULL DEFAULT 10.0,
+`waste_pruning_percentage` decimal(21,9) NOT NULL DEFAULT 10.0,
+`notes` text,
+`_user_tags` text,
+`_comments` text,
+`_assign` text,
+`_liked_by` text,
+index creation(creation))
+			ENGINE=InnoDB
+			ROW_FORMAT=DYNAMIC
+			CHARACTER SET=utf8mb4
+			COLLATE=utf8mb4_unicode_ci
+2026-04-09 09:47:20,508 WARNING database DDL Query made to DB:
+create table `tabLabel Material Machine Params` (
+			name varchar(140) primary key,
+			creation datetime(6),
+			modified datetime(6),
+			modified_by varchar(140),
+			owner varchar(140),
+			docstatus tinyint not null default '0',
+			idx int not null default '0',
+			`material_id` varchar(140),
+`machine_id` varchar(140),
+`cut_speed_mm_per_sec` decimal(21,9) NOT NULL DEFAULT 0.0,
+`kerf_mm` decimal(21,9) NOT NULL DEFAULT 0.0,
+`notes` text,
+`_user_tags` text,
+`_comments` text,
+`_assign` text,
+`_liked_by` text,
+index creation(creation))
+			ENGINE=InnoDB
+			ROW_FORMAT=DYNAMIC
+			CHARACTER SET=utf8mb4
+			COLLATE=utf8mb4_unicode_ci
+2026-04-09 09:47:20,580 WARNING database DDL Query made to DB:
+create table `tabLabel Machine` (
+			name varchar(140) primary key,
+			creation datetime(6),
+			modified datetime(6),
+			modified_by varchar(140),
+			owner varchar(140),
+			docstatus tinyint not null default '0',
+			idx int not null default '0',
+			`machine_name` varchar(140) UNIQUE,
+`machine_type` varchar(140),
+`active` tinyint(4) NOT NULL DEFAULT 1,
+`purchase_price` decimal(21,9) NOT NULL DEFAULT 0.0,
+`lifetime_hours` decimal(21,9) NOT NULL DEFAULT 10000.0,
+`maintenance_annual` decimal(21,9) NOT NULL DEFAULT 0.0,
+`energy_cost_per_hr` decimal(21,9) NOT NULL DEFAULT 0.0,
+`working_hours_per_year` decimal(21,9) NOT NULL DEFAULT 2000.0,
+`hourly_rate` decimal(21,9) NOT NULL DEFAULT 0.0,
+`_user_tags` text,
+`_comments` text,
+`_assign` text,
+`_liked_by` text,
+index creation(creation))
+			ENGINE=InnoDB
+			ROW_FORMAT=DYNAMIC
+			CHARACTER SET=utf8mb4
+			COLLATE=utf8mb4_unicode_ci
+2026-04-09 09:51:43,296 WARNING database DDL Query made to DB:
+ALTER TABLE `tabQuotation Item` ADD COLUMN `label_width_mm` decimal(21,9) NOT NULL DEFAULT 0.0
+2026-04-09 09:51:43,415 WARNING database DDL Query made to DB:
+ALTER TABLE `tabQuotation Item` ADD COLUMN `label_height_mm` decimal(21,9) NOT NULL DEFAULT 0.0
+2026-04-09 09:51:43,494 WARNING database DDL Query made to DB:
+ALTER TABLE `tabQuotation Item` ADD COLUMN `label_material` varchar(140)
+2026-04-09 09:51:43,566 WARNING database DDL Query made to DB:
+ALTER TABLE `tabQuotation Item` ADD COLUMN `label_addon` varchar(140)
+2026-04-09 09:51:43,635 WARNING database DDL Query made to DB:
+ALTER TABLE `tabQuotation Item` ADD COLUMN `label_description` varchar(140)
+2026-04-09 09:51:43,738 WARNING database DDL Query made to DB:
+ALTER TABLE `tabSales Invoice Item` ADD COLUMN `label_width_mm` decimal(21,9) NOT NULL DEFAULT 0.0
+2026-04-09 09:51:43,823 WARNING database DDL Query made to DB:
+ALTER TABLE `tabSales Invoice Item` ADD COLUMN `label_height_mm` decimal(21,9) NOT NULL DEFAULT 0.0
+2026-04-09 09:51:43,903 WARNING database DDL Query made to DB:
+ALTER TABLE `tabSales Invoice Item` ADD COLUMN `label_material` varchar(140)
+2026-04-09 09:51:43,983 WARNING database DDL Query made to DB:
+ALTER TABLE `tabSales Invoice Item` ADD COLUMN `label_addon` varchar(140)
+2026-04-09 09:51:44,061 WARNING database DDL Query made to DB:
+ALTER TABLE `tabSales Invoice Item` ADD COLUMN `label_description` varchar(140)

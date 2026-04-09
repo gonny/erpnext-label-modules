@@ -1,6 +1,7 @@
 [
   {
     "doctype": "Label Calculator Settings",
+    "name": "Label Calculator Settings",
     "income_tax_rate": 15.0,
     "apply_material_grossup": 1
   }

@@ -2,6 +2,7 @@
   {
     "doctype": "Custom Field",
     "dt": "Quotation Item",
+    "name": "Quotation Item-label_width_mm",
     "fieldname": "label_width_mm",
     "fieldtype": "Float",
     "insert_after": "description",
@@ -11,6 +12,7 @@
   {
     "doctype": "Custom Field",
     "dt": "Quotation Item",
+    "name": "Quotation Item-label_height_mm",
     "fieldname": "label_height_mm",
     "fieldtype": "Float",
     "insert_after": "label_width_mm",
@@ -20,6 +22,7 @@
   {
     "doctype": "Custom Field",
     "dt": "Quotation Item",
+    "name": "Quotation Item-label_material",
     "fieldname": "label_material",
     "fieldtype": "Link",
     "insert_after": "label_height_mm",
@@ -30,6 +33,7 @@
   {
     "doctype": "Custom Field",
     "dt": "Quotation Item",
+    "name": "Quotation Item-label_addon",
     "fieldname": "label_addon",
     "fieldtype": "Link",
     "insert_after": "label_material",
@@ -40,6 +44,7 @@
   {
     "doctype": "Custom Field",
     "dt": "Quotation Item",
+    "name": "Quotation Item-label_description",
     "fieldname": "label_description",
     "fieldtype": "Data",
     "insert_after": "label_addon",
@@ -49,6 +54,7 @@
   {
     "doctype": "Custom Field",
     "dt": "Sales Invoice Item",
+    "name": "Sales Invoice Item-label_width_mm",
     "fieldname": "label_width_mm",
     "fieldtype": "Float",
     "insert_after": "description",
@@ -58,6 +64,7 @@
   {
     "doctype": "Custom Field",
     "dt": "Sales Invoice Item",
+    "name": "Sales Invoice Item-label_height_mm",
     "fieldname": "label_height_mm",
     "fieldtype": "Float",
     "insert_after": "label_width_mm",
@@ -67,6 +74,7 @@
   {
     "doctype": "Custom Field",
     "dt": "Sales Invoice Item",
+    "name": "Sales Invoice Item-label_material",
     "fieldname": "label_material",
     "fieldtype": "Link",
     "insert_after": "label_height_mm",
@@ -77,6 +85,7 @@
   {
     "doctype": "Custom Field",
     "dt": "Sales Invoice Item",
+    "name": "Sales Invoice Item-label_addon",
     "fieldname": "label_addon",
     "fieldtype": "Link",
     "insert_after": "label_material",
@@ -87,6 +96,7 @@
   {
     "doctype": "Custom Field",
     "dt": "Sales Invoice Item",
+    "name": "Sales Invoice Item-label_description",
     "fieldname": "label_description",
     "fieldtype": "Data",
     "insert_after": "label_addon",

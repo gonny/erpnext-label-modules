@@ -1,352 +1,125 @@
 """Tests for laser calculation mode."""
 
+import math
+
 import pytest
 
 from label_calculator.core.calculator import calculate
-from label_calculator.core.models import (
-    JobInput,
-    MachineInput,
-    MaterialInput,
-    MaterialMachineParams,
-    TaxConfig,
-    TierInput,
-)
+from label_calculator.core.models import CalcResult, JobInput, MaterialInput, TaxConfig, TierInput
 
 
 @pytest.mark.unit
-def test_labels_per_sheet(
-    vinyl_material: MaterialInput,
-    epilog_laser: MachineInput,
-    vinyl_laser_params: MaterialMachineParams,
-    small_batch_tier: TierInput,
-    laser_job_50x30: JobInput,
-) -> None:
-    """Labels per sheet for 305×610 sheet, 50×30mm labels, kerf=0.15."""
-    result = calculate(
-        job=laser_job_50x30,
-        material=vinyl_material,
-        machine=epilog_laser,
-        params=vinyl_laser_params,
-        tier=small_batch_tier,
-    )
-    # 305/(50+0.15)=6, 610/(30+0.15)=20 → 120
-    assert result.labels_per_sheet == 120
-
-
-@pytest.mark.unit
-def test_sheets_needed(
-    vinyl_material: MaterialInput,
-    epilog_laser: MachineInput,
-    vinyl_laser_params: MaterialMachineParams,
-    small_batch_tier: TierInput,
-    laser_job_50x30: JobInput,
-) -> None:
-    """Sheets needed must account for waste."""
-    result = calculate(
-        job=laser_job_50x30,
-        material=vinyl_material,
-        machine=epilog_laser,
-        params=vinyl_laser_params,
-        tier=small_batch_tier,
-    )
-    assert result.sheets_needed >= 1
-
-
-@pytest.mark.unit
-def test_material_cost(
-    vinyl_material: MaterialInput,
-    epilog_laser: MachineInput,
-    vinyl_laser_params: MaterialMachineParams,
-    small_batch_tier: TierInput,
-    laser_job_50x30: JobInput,
+def test_laser_returns_calc_result(
+    leatherette_material: MaterialInput,
+    leatherette_tier_do30: TierInput,
     default_tax: TaxConfig,
 ) -> None:
-    """Material cost must be positive and include gross-up."""
-    result = calculate(
-        job=laser_job_50x30,
-        material=vinyl_material,
-        machine=epilog_laser,
-        params=vinyl_laser_params,
-        tier=small_batch_tier,
-        tax=default_tax,
-    )
+    """calculate() returns a CalcResult for laser mode."""
+    job = JobInput(width=30, height=20, quantity=10, production_type="laser")
+    result = calculate(job, leatherette_material, leatherette_tier_do30, default_tax)
+    assert isinstance(result, CalcResult)
+
+
+@pytest.mark.unit
+def test_laser_material_cost_positive(
+    leatherette_material: MaterialInput,
+    leatherette_tier_do30: TierInput,
+    default_tax: TaxConfig,
+) -> None:
+    """Material cost (raw and with margin) must be positive."""
+    job = JobInput(width=30, height=20, quantity=10, production_type="laser")
+    result = calculate(job, leatherette_material, leatherette_tier_do30, default_tax)
+    assert result.material_cost_raw > 0
     assert result.material_cost > 0
 
 
 @pytest.mark.unit
-def test_machine_cost_positive(
-    vinyl_material: MaterialInput,
-    epilog_laser: MachineInput,
-    vinyl_laser_params: MaterialMachineParams,
-    small_batch_tier: TierInput,
-    laser_job_50x30: JobInput,
+def test_laser_material_cost_formula(
+    leatherette_material: MaterialInput,
+    leatherette_tier_do30: TierInput,
+    default_tax: TaxConfig,
 ) -> None:
-    """Machine cost must be positive when hourly rate > 0."""
-    result = calculate(
-        job=laser_job_50x30,
-        material=vinyl_material,
-        machine=epilog_laser,
-        params=vinyl_laser_params,
-        tier=small_batch_tier,
-    )
-    assert result.machine_cost > 0
+    """material_cost = material_cost_raw × (1 + margin/100)."""
+    job = JobInput(width=30, height=20, quantity=10, production_type="laser")
+    result = calculate(job, leatherette_material, leatherette_tier_do30, default_tax)
+    expected = result.material_cost_raw * (1 + leatherette_tier_do30.margin_pct / 100)
+    assert result.material_cost == pytest.approx(expected, rel=1e-6)
 
 
 @pytest.mark.unit
-def test_operator_cost_includes_setup(
-    vinyl_material: MaterialInput,
-    epilog_laser: MachineInput,
-    vinyl_laser_params: MaterialMachineParams,
-    small_batch_tier: TierInput,
+def test_laser_margin_on_material_only(
+    leatherette_material: MaterialInput,
+    leatherette_tier_do30: TierInput,
+    default_tax: TaxConfig,
 ) -> None:
-    """Operator cost should include setup time."""
-    job_with_setup = JobInput(
-        width=50,
-        height=30,
-        quantity=100,
-        copies=1,
-        production_type="laser",
-        operator_rate=200.0,
-        setup_time_min=30.0,
-        operator_time_per_unit_sec=0.0,
-    )
-    result = calculate(
-        job=job_with_setup,
-        material=vinyl_material,
-        machine=epilog_laser,
-        params=vinyl_laser_params,
-        tier=small_batch_tier,
-    )
-    # 30 min setup = 0.5 hrs × 200 = 100 CZK minimum
-    assert result.operator_cost >= 100.0
+    """Margin applies to material, NOT to labor."""
+    job = JobInput(width=30, height=20, quantity=10, production_type="laser")
+    result = calculate(job, leatherette_material, leatherette_tier_do30, default_tax)
+    # unit_price = material_with_margin + labor (no margin on labor), rounded up
+    raw_sum = result.material_cost + result.labor_cost
+    assert result.unit_price == pytest.approx(raw_sum, abs=0.1)  # within rounding
 
 
 @pytest.mark.unit
-def test_waste_cost(
-    vinyl_material: MaterialInput,
-    epilog_laser: MachineInput,
-    vinyl_laser_params: MaterialMachineParams,
-    prototype_tier: TierInput,
+def test_laser_labor_formula(
+    leatherette_material: MaterialInput,
+    leatherette_tier_do30: TierInput,
+    default_tax: TaxConfig,
 ) -> None:
-    """Waste cost must be positive when tier has waste params."""
-    job = JobInput(
-        width=50,
-        height=30,
-        quantity=5,
-        copies=1,
-        production_type="laser",
-        operator_rate=200.0,
-        setup_time_min=5.0,
-        operator_time_per_unit_sec=0.0,
-    )
-    result = calculate(
-        job=job,
-        material=vinyl_material,
-        machine=epilog_laser,
-        params=vinyl_laser_params,
-        tier=prototype_tier,
-    )
-    assert result.waste_cost > 0
+    """labor_cost = hourly_rate / pieces_per_hour."""
+    job = JobInput(width=30, height=20, quantity=10, production_type="laser")
+    result = calculate(job, leatherette_material, leatherette_tier_do30, default_tax, hourly_rate=810)
+    expected_labor = 810 / 80  # 10.125
+    assert result.labor_cost == pytest.approx(expected_labor, rel=1e-6)
 
 
 @pytest.mark.unit
-def test_margin_applied(
-    vinyl_material: MaterialInput,
-    epilog_laser: MachineInput,
-    vinyl_laser_params: MaterialMachineParams,
-    small_batch_tier: TierInput,
-    laser_job_50x30: JobInput,
+def test_laser_unit_price_rounded_up(
+    leatherette_material: MaterialInput,
+    leatherette_tier_do30: TierInput,
+    default_tax: TaxConfig,
 ) -> None:
-    """Margin amount must be positive with margin_pct > 0."""
-    result = calculate(
-        job=laser_job_50x30,
-        material=vinyl_material,
-        machine=epilog_laser,
-        params=vinyl_laser_params,
-        tier=small_batch_tier,
-    )
-    assert result.margin_amount > 0
-    assert result.margin_amount == pytest.approx(result.subtotal * small_batch_tier.margin_pct / 100, rel=1e-3)
+    """Unit price rounded UP to 0.10 CZK."""
+    job = JobInput(width=30, height=20, quantity=10, production_type="laser")
+    result = calculate(job, leatherette_material, leatherette_tier_do30, default_tax)
+    expected = math.ceil((result.material_cost + result.labor_cost) * 10) / 10
+    assert result.unit_price == expected
 
 
 @pytest.mark.unit
-def test_total_is_subtotal_plus_margin(
-    vinyl_material: MaterialInput,
-    epilog_laser: MachineInput,
-    vinyl_laser_params: MaterialMachineParams,
-    small_batch_tier: TierInput,
-    laser_job_50x30: JobInput,
+def test_laser_total_is_unit_times_quantity(
+    leatherette_material: MaterialInput,
+    leatherette_tier_do30: TierInput,
+    default_tax: TaxConfig,
 ) -> None:
-    """Total price = subtotal + margin_amount."""
-    result = calculate(
-        job=laser_job_50x30,
-        material=vinyl_material,
-        machine=epilog_laser,
-        params=vinyl_laser_params,
-        tier=small_batch_tier,
-    )
-    assert result.total_price == pytest.approx(result.subtotal + result.margin_amount, rel=1e-3)
+    """total_price = unit_price × quantity."""
+    job = JobInput(width=30, height=20, quantity=10, production_type="laser")
+    result = calculate(job, leatherette_material, leatherette_tier_do30, default_tax)
+    assert result.total_price == pytest.approx(result.unit_price * 10, rel=1e-6)
 
 
 @pytest.mark.unit
-def test_unit_price(
-    vinyl_material: MaterialInput,
-    epilog_laser: MachineInput,
-    vinyl_laser_params: MaterialMachineParams,
-    small_batch_tier: TierInput,
-    laser_job_50x30: JobInput,
+def test_laser_zero_dims_raises(
+    leatherette_material: MaterialInput,
+    leatherette_tier_do30: TierInput,
 ) -> None:
-    """Unit price = total_price / quantity."""
-    result = calculate(
-        job=laser_job_50x30,
-        material=vinyl_material,
-        machine=epilog_laser,
-        params=vinyl_laser_params,
-        tier=small_batch_tier,
-    )
-    expected_unit = result.total_price / laser_job_50x30.quantity
-    assert result.unit_price == pytest.approx(expected_unit, rel=1e-3)
-
-
-@pytest.mark.unit
-def test_single_unit(
-    vinyl_material: MaterialInput,
-    epilog_laser: MachineInput,
-    vinyl_laser_params: MaterialMachineParams,
-    prototype_tier: TierInput,
-) -> None:
-    """Single label calculation should work."""
-    job = JobInput(
-        width=50,
-        height=30,
-        quantity=1,
-        copies=1,
-        production_type="laser",
-        operator_rate=200.0,
-        setup_time_min=5.0,
-        operator_time_per_unit_sec=0.0,
-    )
-    result = calculate(
-        job=job,
-        material=vinyl_material,
-        machine=epilog_laser,
-        params=vinyl_laser_params,
-        tier=prototype_tier,
-    )
-    assert result.unit_price > 0
-    assert result.total_price == pytest.approx(result.unit_price, rel=1e-3)
-
-
-@pytest.mark.unit
-def test_large_batch_cheaper_per_unit(
-    vinyl_material: MaterialInput,
-    epilog_laser: MachineInput,
-    vinyl_laser_params: MaterialMachineParams,
-    prototype_tier: TierInput,
-    large_batch_tier: TierInput,
-) -> None:
-    """Large batch should have cheaper unit price than prototype."""
-    small_job = JobInput(
-        width=50,
-        height=30,
-        quantity=5,
-        copies=1,
-        production_type="laser",
-        operator_rate=200.0,
-        setup_time_min=5.0,
-        operator_time_per_unit_sec=0.0,
-    )
-    large_job = JobInput(
-        width=50,
-        height=30,
-        quantity=1000,
-        copies=1,
-        production_type="laser",
-        operator_rate=200.0,
-        setup_time_min=5.0,
-        operator_time_per_unit_sec=0.0,
-    )
-    r_small = calculate(
-        job=small_job,
-        material=vinyl_material,
-        machine=epilog_laser,
-        params=vinyl_laser_params,
-        tier=prototype_tier,
-    )
-    r_large = calculate(
-        job=large_job,
-        material=vinyl_material,
-        machine=epilog_laser,
-        params=vinyl_laser_params,
-        tier=large_batch_tier,
-    )
-    assert r_large.unit_price < r_small.unit_price
-
-
-@pytest.mark.unit
-def test_zero_dimensions_raises(
-    vinyl_material: MaterialInput,
-    epilog_laser: MachineInput,
-    vinyl_laser_params: MaterialMachineParams,
-    small_batch_tier: TierInput,
-) -> None:
-    """Zero dimensions should raise ValueError."""
-    job = JobInput(
-        width=0,
-        height=30,
-        quantity=100,
-        copies=1,
-        production_type="laser",
-        operator_rate=200.0,
-    )
+    """Zero dimensions raise ValueError."""
+    job = JobInput(width=0, height=20, quantity=10, production_type="laser")
     with pytest.raises(ValueError, match="positive"):
-        calculate(
-            job=job,
-            material=vinyl_material,
-            machine=epilog_laser,
-            params=vinyl_laser_params,
-            tier=small_batch_tier,
-        )
+        calculate(job, leatherette_material, leatherette_tier_do30)
 
 
 @pytest.mark.unit
-def test_multiple_copies_increases_cost(
-    vinyl_material: MaterialInput,
-    epilog_laser: MachineInput,
-    vinyl_laser_params: MaterialMachineParams,
-    small_batch_tier: TierInput,
+def test_laser_copies_multiply_total(
+    leatherette_material: MaterialInput,
+    leatherette_tier_do30: TierInput,
+    default_tax: TaxConfig,
 ) -> None:
-    """Multiple copies should increase total cost."""
-    job_1copy = JobInput(
-        width=50,
-        height=30,
-        quantity=100,
-        copies=1,
-        production_type="laser",
-        operator_rate=200.0,
-        setup_time_min=5.0,
-    )
-    job_2copies = JobInput(
-        width=50,
-        height=30,
-        quantity=100,
-        copies=2,
-        production_type="laser",
-        operator_rate=200.0,
-        setup_time_min=5.0,
-    )
-    r1 = calculate(
-        job=job_1copy,
-        material=vinyl_material,
-        machine=epilog_laser,
-        params=vinyl_laser_params,
-        tier=small_batch_tier,
-    )
-    r2 = calculate(
-        job=job_2copies,
-        material=vinyl_material,
-        machine=epilog_laser,
-        params=vinyl_laser_params,
-        tier=small_batch_tier,
-    )
-    assert r2.total_price > r1.total_price
+    """Multiple copies multiply total_price."""
+    job_1 = JobInput(width=30, height=20, quantity=10, copies=1, production_type="laser")
+    job_2 = JobInput(width=30, height=20, quantity=10, copies=2, production_type="laser")
+    r1 = calculate(job_1, leatherette_material, leatherette_tier_do30, default_tax)
+    r2 = calculate(job_2, leatherette_material, leatherette_tier_do30, default_tax)
+    # Same unit price, double total
+    assert r1.unit_price == r2.unit_price
+    assert r2.total_price == pytest.approx(r1.total_price * 2, rel=1e-6)

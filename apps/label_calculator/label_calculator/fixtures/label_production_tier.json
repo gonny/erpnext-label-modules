@@ -1,6 +1,7 @@
 [
   {
     "doctype": "Label Production Tier",
+    "name": "Standard - Vinyl – laser - Prototyp - 1-10",
     "tier_name": "Prototyp",
     "group_id": "Vinyl – laser",
     "pricing_profile_id": "Standard",
@@ -15,6 +16,7 @@
   },
   {
     "doctype": "Label Production Tier",
+    "name": "Standard - Vinyl – laser - Malá série - 11-100",
     "tier_name": "Malá série",
     "group_id": "Vinyl – laser",
     "pricing_profile_id": "Standard",
@@ -29,6 +31,7 @@
   },
   {
     "doctype": "Label Production Tier",
+    "name": "Standard - Vinyl – laser - Standard - 101-500",
     "tier_name": "Standard",
     "group_id": "Vinyl – laser",
     "pricing_profile_id": "Standard",
@@ -43,6 +46,7 @@
   },
   {
     "doctype": "Label Production Tier",
+    "name": "Standard - Vinyl – laser - Velká série - 501-999999",
     "tier_name": "Velká série",
     "group_id": "Vinyl – laser",
     "pricing_profile_id": "Standard",
@@ -57,6 +61,7 @@
   },
   {
     "doctype": "Label Production Tier",
+    "name": "Standard - Saténové stuhy - Prototyp - 1-50",
     "tier_name": "Prototyp",
     "group_id": "Saténové stuhy",
     "pricing_profile_id": "Standard",
@@ -71,6 +76,7 @@
   },
   {
     "doctype": "Label Production Tier",
+    "name": "Standard - Saténové stuhy - Standard - 51-500",
     "tier_name": "Standard",
     "group_id": "Saténové stuhy",
     "pricing_profile_id": "Standard",
@@ -85,6 +91,7 @@
   },
   {
     "doctype": "Label Production Tier",
+    "name": "Standard - Saténové stuhy - Velká série - 501-999999",
     "tier_name": "Velká série",
     "group_id": "Saténové stuhy",
     "pricing_profile_id": "Standard",
@@ -99,6 +106,7 @@
   },
   {
     "doctype": "Label Production Tier",
+    "name": "VIP Velkoodběr - Vinyl – laser - Prototyp - 1-10",
     "tier_name": "Prototyp",
     "group_id": "Vinyl – laser",
     "pricing_profile_id": "VIP Velkoodběr",
@@ -113,6 +121,7 @@
   },
   {
     "doctype": "Label Production Tier",
+    "name": "VIP Velkoodběr - Vinyl – laser - Standard - 11-999999",
     "tier_name": "Standard",
     "group_id": "Vinyl – laser",
     "pricing_profile_id": "VIP Velkoodběr",

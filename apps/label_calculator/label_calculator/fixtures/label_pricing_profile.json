@@ -1,6 +1,7 @@
 [
   {
     "doctype": "Label Pricing Profile",
+    "name": "Standard",
     "profile_name": "Standard",
     "code": "standard",
     "is_default": 1,
@@ -11,6 +12,7 @@
   },
   {
     "doctype": "Label Pricing Profile",
+    "name": "VIP Velkoodběr",
     "profile_name": "VIP Velkoodběr",
     "code": "vip1",
     "is_default": 0,
