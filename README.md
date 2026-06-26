@@ -74,6 +74,18 @@ cd /workspace/frappe-bench
 bench run-tests --app label_calculator
 ```
 
+### Convenience Make targets
+
+Run `make help` to see available workflow shortcuts. Bench-backed targets require `SITE` to be set (for example, `SITE=localhost`).
+
+```bash
+make unit-test
+make integration-test SITE=localhost
+make reinstall-app SITE=localhost
+make refresh-data SITE=localhost
+make fresh-start SITE=localhost
+```
+
 ## Linting & Type Checking
 
 ```bash
@@ -97,6 +109,7 @@ pre-commit run --all-files  # run all hooks manually
 |---|---|
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Branch strategy, commit convention, PR checklist |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | High-level architecture |
+| [docs/manual-testing-scenarios.md](docs/manual-testing-scenarios.md) | Manual ERPNext 16 UI test cases with expected calculator outputs |
 | [docs/mcp-tools.md](docs/mcp-tools.md) | MCP tools for AI agent development |
 | [docs/AGENT_GUIDELINES.md](docs/AGENT_GUIDELINES.md) | AI agent mindset and coding conventions |
 | [docs/BACKLOG.md](docs/BACKLOG.md) | Future items explicitly out of scope |

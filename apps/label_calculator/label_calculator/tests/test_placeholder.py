@@ -1,12 +1,9 @@
-"""Placeholder tests — validate that the test pipeline is wired up correctly.
-
-These tests do NOT require a running Frappe instance and are tagged ``unit``
-so they run in the fast, database-free CI job.
-"""
+"""Focused unit tests for the pure-Python label pricing engine."""
 
 import pytest
 
 from label_calculator.core.calculator import LabelSpec, PriceResult, calculate_label_price
+from label_calculator.core.default_data import load_default_data
 
 
 @pytest.mark.unit
@@ -37,3 +34,23 @@ def test_calculate_label_price_currency_is_czk(sample_label_spec: LabelSpec) -> 
     """Default currency for all calculations is CZK."""
     result = calculate_label_price(sample_label_spec)
     assert result.currency == "CZK"
+
+
+def _find_fixture_item(items: list[dict[str, object]], name: str) -> dict[str, object]:
+    item = next((item for item in items if item["name"] == name), None)
+    if item is None:
+        raise AssertionError(f"Fixture item {name!r} was not found")
+    return item
+
+
+@pytest.mark.unit
+def test_load_default_data_contains_seed_materials() -> None:
+    """The bundled fixture should contain the default material groups and sample materials."""
+    data = load_default_data()
+    material_group = _find_fixture_item(data["material_groups"], "Saténové stuhy")
+    material = _find_fixture_item(data["materials"], "Bílý vinyl 305x610mm")
+    pricing_profile = _find_fixture_item(data["pricing_profiles"], "Standard")
+
+    assert material_group["name"] == "Saténové stuhy"
+    assert material["name"] == "Bílý vinyl 305x610mm"
+    assert pricing_profile["code"] == "standard"
