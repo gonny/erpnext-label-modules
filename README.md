@@ -109,6 +109,7 @@ pre-commit run --all-files  # run all hooks manually
 |---|---|
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Branch strategy, commit convention, PR checklist |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | High-level architecture |
+| [docs/manual-testing-scenarios.md](docs/manual-testing-scenarios.md) | Manual ERPNext 16 UI test cases with expected calculator outputs |
 | [docs/mcp-tools.md](docs/mcp-tools.md) | MCP tools for AI agent development |
 | [docs/AGENT_GUIDELINES.md](docs/AGENT_GUIDELINES.md) | AI agent mindset and coding conventions |
 | [docs/BACKLOG.md](docs/BACKLOG.md) | Future items explicitly out of scope |
