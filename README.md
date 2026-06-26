@@ -74,6 +74,18 @@ cd /workspace/frappe-bench
 bench run-tests --app label_calculator
 ```
 
+### Convenience Make targets
+
+Run `make help` to see available workflow shortcuts. Bench-backed targets require `SITE` to be set (for example, `SITE=localhost`).
+
+```bash
+make unit-test
+make integration-test SITE=localhost
+make reinstall-app SITE=localhost
+make refresh-data SITE=localhost
+make fresh-start SITE=localhost
+```
+
 ## Linting & Type Checking
 
 ```bash
