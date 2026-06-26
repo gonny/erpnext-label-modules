@@ -48,10 +48,7 @@ class MachineInput:
 
 @dataclass(frozen=True)
 class MaterialMachineParams:
-    """Material/machine parameters used by the laser layout logic."""
-
-    cut_speed_mm_per_sec: float
-    kerf_mm: float
+    """Placeholder for any future machine-specific pricing parameters."""
 
 
 @dataclass(frozen=True)

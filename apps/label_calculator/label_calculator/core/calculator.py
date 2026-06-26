@@ -47,7 +47,6 @@ class LabelSpec:
     waste_pruning_pct: float = 0.0
     sheet_width_mm: float = 100.0
     sheet_height_mm: float = 100.0
-    kerf_mm: float = 0.0
     material_type: str = "sheet"
     cut_margin_pct: float = 0.0
 
@@ -85,7 +84,7 @@ def calculate_label_price(spec: LabelSpec) -> PriceResult:
         waste_test_pct=spec.waste_test_pct,
         waste_pruning_pct=spec.waste_pruning_pct,
     )
-    params = MaterialMachineParams(cut_speed_mm_per_sec=100.0, kerf_mm=spec.kerf_mm)
+    params = MaterialMachineParams()
     job = JobInput(
         width=spec.width_mm,
         height=spec.height_mm,
@@ -132,7 +131,6 @@ def calculate_pricing(
             material.sheet_height,
             job.width,
             job.height,
-            params.kerf_mm,
         )
         sheets_needed = math.ceil(effective_quantity / labels_per_sheet)
         material_cost_raw = sheets_needed * material.price_incl_vat
