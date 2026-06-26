@@ -1,0 +1,72 @@
+{
+  "material_groups": [
+    {
+      "name": "Saténové stuhy",
+      "cut_margin_pct": 0.0
+    },
+    {
+      "name": "Vinyl – laser",
+      "cut_margin_pct": 8.0
+    }
+  ],
+  "materials": [
+    {
+      "name": "Saténová stuha bílá 25mm",
+      "group": "Saténové stuhy",
+      "material_type": "roll",
+      "sheet_width": 25.0,
+      "sheet_height": 100000.0,
+      "price_ex_vat": 0.80,
+      "vat_rate": 21.0
+    },
+    {
+      "name": "Bily vinyl 305x610mm",
+      "group": "Vinyl – laser",
+      "material_type": "sheet",
+      "sheet_width": 305.0,
+      "sheet_height": 610.0,
+      "price_ex_vat": 45.0,
+      "vat_rate": 21.0
+    }
+  ],
+  "pricing_profiles": [
+    {
+      "name": "Standard",
+      "code": "standard",
+      "is_default": true,
+      "is_vip": false
+    },
+    {
+      "name": "VIP Velkoodběr",
+      "code": "vip1",
+      "is_default": false,
+      "is_vip": true
+    }
+  ],
+  "production_tiers": [
+    {
+      "name": "Prototyp",
+      "group": "Vinyl – laser",
+      "profile": "standard",
+      "min_quantity": 1,
+      "max_quantity": 10,
+      "pieces_per_hour": 150.0,
+      "margin_pct": 50.0,
+      "waste_test_pieces": 5,
+      "waste_test_pct": 15.0,
+      "waste_pruning_pct": 12.0
+    },
+    {
+      "name": "Standard",
+      "group": "Vinyl – laser",
+      "profile": "standard",
+      "min_quantity": 101,
+      "max_quantity": 500,
+      "pieces_per_hour": 800.0,
+      "margin_pct": 25.0,
+      "waste_test_pieces": 2,
+      "waste_test_pct": 8.0,
+      "waste_pruning_pct": 8.0
+    }
+  ]
+}

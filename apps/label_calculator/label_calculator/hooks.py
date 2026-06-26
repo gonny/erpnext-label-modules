@@ -17,4 +17,4 @@ app_license = "MIT"
 # scheduler_events = {}
 
 # ─── Fixtures ────────────────────────────────────────────────────────────────
-# fixtures = []
+fixtures = ["default_data"]

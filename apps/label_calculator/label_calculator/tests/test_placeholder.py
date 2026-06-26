@@ -1,12 +1,9 @@
-"""Placeholder tests — validate that the test pipeline is wired up correctly.
-
-These tests do NOT require a running Frappe instance and are tagged ``unit``
-so they run in the fast, database-free CI job.
-"""
+"""Focused unit tests for the pure-Python label pricing engine."""
 
 import pytest
 
 from label_calculator.core.calculator import LabelSpec, PriceResult, calculate_label_price
+from label_calculator.core.default_data import load_default_data
 
 
 @pytest.mark.unit
@@ -37,3 +34,12 @@ def test_calculate_label_price_currency_is_czk(sample_label_spec: LabelSpec) -> 
     """Default currency for all calculations is CZK."""
     result = calculate_label_price(sample_label_spec)
     assert result.currency == "CZK"
+
+
+@pytest.mark.unit
+def test_load_default_data_contains_seed_materials() -> None:
+    """The bundled fixture should contain the default material groups and sample materials."""
+    data = load_default_data()
+    assert data["material_groups"][0]["name"] == "Saténové stuhy"
+    assert data["materials"][1]["name"] == "Bily vinyl 305x610mm"
+    assert data["pricing_profiles"][0]["code"] == "standard"
