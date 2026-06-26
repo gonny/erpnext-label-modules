@@ -12,7 +12,7 @@ class AddonInput:
     name: str
     price_ex_vat: float
     sheet_width: float
-    vat_rate: float = 0.21
+    vat_rate: float = 21.0
 
     @property
     def price_incl_vat(self) -> float:
@@ -30,7 +30,7 @@ class MaterialInput:
     sheet_height: float
     material_type: str = "sheet"
     cut_margin_pct: float = 0.0
-    vat_rate: float = 0.21
+    vat_rate: float = 21.0
     addons: tuple[AddonInput, ...] = field(default_factory=tuple)
 
     @property

@@ -9,6 +9,6 @@ from typing import Any
 
 def load_default_data() -> dict[str, Any]:
     """Load the bundled default data fixture for label pricing."""
-    fixture_path = Path(__file__).resolve().parent / ".." / "fixtures" / "default_data.json"
+    fixture_path = Path(__file__).resolve().parent.parent / "fixtures" / "default_data.json"
     with fixture_path.open(encoding="utf-8") as handle:
         return json.load(handle)

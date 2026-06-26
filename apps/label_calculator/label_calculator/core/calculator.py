@@ -21,12 +21,15 @@ from label_calculator.core.models import (
     TierInput,
 )
 
+# Default description label used when no addon is explicitly selected.
+DEFAULT_ADDON_NAME = "standard"
+
 
 @dataclass(frozen=True)
 class LabelSpec:
     """Specification for a label to be priced.
 
-    All dimensions are in millimetres. Quantity is the number of labels.
+    All dimensions are in millimeters. Quantity is the number of labels.
     """
 
     width_mm: float
@@ -113,10 +116,6 @@ def calculate_pricing(
         raise ValueError("Quantity must be positive")
 
     effective_quantity = compute_effective_quantity(job.quantity, tier)
-    if job.production_type == "thermotransfer":
-        effective_quantity = (
-            job.quantity + tier.waste_test_pieces + math.ceil(job.quantity * (tier.waste_test_pct / 100))
-        )
 
     material_cost_raw = 0.0
     addon_cost_raw = 0.0
@@ -140,6 +139,10 @@ def calculate_pricing(
 
     material_cost = material_cost_raw + addon_cost_raw
     if apply_material_grossup:
+        if income_tax_rate < 0:
+            raise ValueError("income_tax_rate must be non-negative")
+        if income_tax_rate >= 100:
+            raise ValueError("income_tax_rate must be less than 100")
         material_cost = material_cost / (1 - (income_tax_rate / 100))
 
     labor_cost = machine.hourly_rate / tier.pieces_per_hour * effective_quantity
@@ -149,9 +152,11 @@ def calculate_pricing(
     unit_price = max(1.0, round_up(base_total / job.quantity, step))
     total_price = round_up(unit_price * job.quantity, step)
 
+    # Use the first addon in the description so laser/TTR quotes remain readable.
+    first_addon = material.addons[0] if material.addons else None
     description_line = build_description(
         material,
-        material.addons[0] if material.addons else None,
+        first_addon,
         job.width,
         job.height,
         job.production_type,
@@ -176,7 +181,7 @@ def build_description(
     production_type: str,
 ) -> str:
     """Create a human-readable description for the calculated label."""
-    addon_name = addon.name if addon else "standard"
+    addon_name = addon.name if addon else DEFAULT_ADDON_NAME
     if production_type == "thermotransfer":
         return f"{material.name} {int(width)}mm x {int(height)}mm, {addon_name} tisk"
     return f"{material.name} {int(width)}mm x {int(height)}mm, laser"

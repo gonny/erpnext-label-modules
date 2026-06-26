@@ -36,10 +36,21 @@ def test_calculate_label_price_currency_is_czk(sample_label_spec: LabelSpec) -> 
     assert result.currency == "CZK"
 
 
+def _find_fixture_item(items: list[dict[str, object]], name: str) -> dict[str, object]:
+    item = next((item for item in items if item["name"] == name), None)
+    if item is None:
+        raise AssertionError(f"Fixture item {name!r} was not found")
+    return item
+
+
 @pytest.mark.unit
 def test_load_default_data_contains_seed_materials() -> None:
     """The bundled fixture should contain the default material groups and sample materials."""
     data = load_default_data()
-    assert data["material_groups"][0]["name"] == "Saténové stuhy"
-    assert data["materials"][1]["name"] == "Bily vinyl 305x610mm"
-    assert data["pricing_profiles"][0]["code"] == "standard"
+    material_group = _find_fixture_item(data["material_groups"], "Saténové stuhy")
+    material = _find_fixture_item(data["materials"], "Bílý vinyl 305x610mm")
+    pricing_profile = _find_fixture_item(data["pricing_profiles"], "Standard")
+
+    assert material_group["name"] == "Saténové stuhy"
+    assert material["name"] == "Bílý vinyl 305x610mm"
+    assert pricing_profile["code"] == "standard"
