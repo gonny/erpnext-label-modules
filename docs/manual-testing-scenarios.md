@@ -12,6 +12,10 @@ If your local installation exposes the calculator through a custom DocType or a 
 
 The expected values below were computed from the current pure-Python engine in `apps/label_calculator/label_calculator/core/calculator.py` and the default seed data in `apps/label_calculator/label_calculator/fixtures/default_data.json`.
 
+If the bundled seed data has been changed or a different fixture set is loaded, refresh the fixture data and recompute the expected values before comparing them with the form output.
+
+Note: the engine uses different rounding steps for the final unit and total prices. Laser scenarios use a `0.10` step, while thermotransfer uses a `0.001` step, so the thermotransfer unit and total prices are shown to three decimal places.
+
 ## Scenario 1: Laser label, small batch
 
 Use this scenario to confirm that a basic laser calculation returns the expected unit and total price.
@@ -97,4 +101,4 @@ Expected output:
 - Unit price: `1.041 CZK`
 - Total price: `104.10 CZK`
 - Currency: `CZK`
-- Description line: `Saténová stuha bílá 25mm 20mm x 20mm, standard tisk`
+- Description line: `Saténová stuha bílá 25mm 20mm x 20mm, thermotransfer`
